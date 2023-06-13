@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
         self.cbContrast.setIconSize(QtCore.QSize(24, 24))
         self.cbContrast.setObjectName("cbContrast")
         self.cbBrightness = QtWidgets.QCheckBox(self.centralwidget)
-        self.cbBrightness.setGeometry(QtCore.QRect(620, 280, 110, 20))
+        self.cbBrightness.setGeometry(QtCore.QRect(620, 280, 120, 20))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.cbBrightness.setFont(font)
@@ -304,10 +304,7 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             frame = self.sepia(frame)
 
         if self.cbPencilSketch.isChecked():
-            if self.cbGrayscale.isChecked():
-                frame = self.pencil_sketch_grey(frame)
-            else:
-                frame = self.pencil_sketch_col(frame)
+            frame = self.pencil_sketch_grey(frame)
 
         if self.cbHDR.isChecked():
             frame = self.HDR(frame)
@@ -374,8 +371,10 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 # Mengambil foto
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-                file_name = f"{self.folderPathInput.toPlainText()}/selfie-{time_stamp}.png"
-                
+                file_name = (
+                    f"{self.folderPathInput.toPlainText()}/selfie-{time_stamp}.png"
+                )
+
                 # Menerapkan filter pada foto sebelum menyimpan
                 filtered_frame = self.apply_filters_to_image(original_frame)
 
@@ -441,16 +440,10 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         return img_sepia
 
     def pencil_sketch_grey(self, img):
-        sk_gray, sk_color = cv2.pencilSketch(
+        sk_gray, _ = cv2.pencilSketch(
             img, sigma_s=60, sigma_r=0.07, shade_factor=0.1
         )
         return sk_gray
-
-    def pencil_sketch_col(self, img):
-        sk_gray, sk_color = cv2.pencilSketch(
-            img, sigma_s=60, sigma_r=0.07, shade_factor=0.1
-        )
-        return sk_color
 
     def HDR(self, img):
         hdr = cv2.detailEnhance(img, sigma_s=12, sigma_r=0.15)
