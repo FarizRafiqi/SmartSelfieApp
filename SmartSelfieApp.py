@@ -370,9 +370,9 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                 # Mengambil foto
                 time_stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-                file_name = (
-                    f"{self.folderPathInput.toPlainText()}/selfie-{time_stamp}.png"
-                )
+                folder_path = self.folderPathInput.toPlainText()
+                os.makedirs(folder_path, exist_ok=True)
+                file_name = f"{folder_path}/selfie-{time_stamp}.png"
 
                 # Menerapkan filter pada foto sebelum menyimpan
                 filtered_frame = self.apply_filters_to_image(original_frame)
