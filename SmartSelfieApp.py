@@ -9,8 +9,8 @@
 
 import cv2
 import datetime
-import simpleaudio as sa
 import os
+import winsound
 import time
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -19,7 +19,6 @@ from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QApplication, QMainWindow, QLabel
 from PyQt5.uic import loadUi
 from scipy.interpolate import UnivariateSpline
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -399,9 +398,7 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.video_label.setPixmap(QPixmap.fromImage(image))
 
     def play_camera_click_sound(self):
-        wave_obj = sa.WaveObject.from_wave_file("camera_click.wav")
-        play_obj = wave_obj.play()
-        play_obj.wait_done()
+        winsound.PlaySound("camera_click.wav", winsound.SND_FILENAME)
 
     def closeEvent(self, event):
         self.video_capture.release()
@@ -440,9 +437,7 @@ class MyMainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         return img_sepia
 
     def pencil_sketch_grey(self, img):
-        sk_gray, _ = cv2.pencilSketch(
-            img, sigma_s=60, sigma_r=0.07, shade_factor=0.1
-        )
+        sk_gray, _ = cv2.pencilSketch(img, sigma_s=60, sigma_r=0.07, shade_factor=0.1)
         return sk_gray
 
     def HDR(self, img):
